@@ -28,6 +28,13 @@ module.exports = function(app,io,connection){
 	  res.sendFile('chartjs.html',{'root':__dirname + '/templates'})
 	})
 
+	app.get('/test/:id/:name',function(req,res){
+	  res.json({ query: req.params.id,query: req.params.id});
+	})
+	app.get('/test',function(req,res){
+		res.sendFile('Test.html',{'root':__dirname + '/templates'})
+	})
+
 	/*app.get('/chat',function(req,res){
 	  res.sendFile('chat.html',{'root':__dirname + '/templates'})
 	})*/
@@ -216,7 +223,7 @@ module.exports = function(app,io,connection){
 
 	  socket.on('messagex', function (message) {
 	    socket.message = message;
-	    socket.broadcast.emit('message', 'Chart update by '+ socket.message +' successfully');
+	    socket.broadcast.emit('message', message);
 			io.sockets.connected[socket.id].emit('messagexyz', 'update');
 	    console.log('message '+ 'You are connected!');
 	      });
