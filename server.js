@@ -31,6 +31,47 @@ var connection = mysql.createConnection({
 
  app.use(parser.json());
  app.use(parser.urlencoded({ extended: true }));
+
+app.use(function(req, res, next) {
+            var body = '';
+            req.on('data', function(data) {
+                    body = JSON.parse(data.toString());
+                    console.log("body " + body.task);
+                    if (body.task == 'refresh') {
+                        console.log("payload " + body.payload.job);
+                        io.sockets.emit('messagexyu', body);
+                        /*
+                        io.sockets.on('connection', function(socket) {
+                                    socket.on('messagex', function (message) {
+                               
+                                    console.log("payload " + body.payload.job);
+                                    socket.broadcast.emit('messagexyu', body);
+                                    
+                                });
+                                
+                            });*/
+
+                        }
+
+                      if (body.task == 'DO_LONGRUN') {
+                       console.log("job size " + body.payload.job);
+                       io.sockets.emit('messageytr', body);
+                        
+                      }
+                      
+
+                    });
+next();
+
+
+            });
+
+
+
+
+
+
+
  require('./config')(app, io);
  require('./routes')(app, io,connection);
 

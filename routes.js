@@ -13,6 +13,21 @@ module.exports = function(app,io,connection){
 
 
 	app.get('/',function(req,res){
+            var body = '';
+            req.on('data', function (data) {
+            body += JSON.parse(data.toString());
+             if(body.message == 'refresh'){
+                   console.log("body "+body);
+                   socket.on(body.message, function (message) {
+	    
+	    socket.broadcast.emit('message', body.message);              
+                      
+        });
+
+             }
+            
+            });
+            
 	    res.sendFile('home.html',{'root': __dirname + '/templates'});
 	})
 
